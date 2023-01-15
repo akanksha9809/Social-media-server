@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); 
+const dotenv = require("dotenv");
+dotenv.config("./.env");
 
 module.exports = async() => {
-    const mongoUri = 'mongodb+srv://akanksha:q9r2ZJLTS6VmJAZN@cluster0.scmyfrl.mongodb.net/?retryWrites=true&w=majority';
+    const mongoUri = `mongodb+srv://akanksha:xCq4nb2UfqwCn9TI@cluster0.scmyfrl.mongodb.net/?retryWrites=true&w=majority`;
     
     try {
         const connect = await mongoose.connect(
@@ -14,7 +16,5 @@ module.exports = async() => {
     } catch (error) {
         console.log(error);
         process.exit(1);
-    }
-
-    
+    }  
 }

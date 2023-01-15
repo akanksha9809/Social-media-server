@@ -16,6 +16,9 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    bio: {
+        type: String
+    },
     avatar: {
         publicId: String,
         url: String
@@ -37,7 +40,11 @@ const userSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId, //connectin 2 schema
             ref: 'post'
         }
-    ]
-});
+    ],
+}, {
+    timestamps: true
+}
+
+);
 
 module.exports = mongoose.model('user', userSchema);
