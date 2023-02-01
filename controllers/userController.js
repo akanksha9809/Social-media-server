@@ -122,15 +122,17 @@ const deleteMyProfile = async (req, res) => {
     const curUserId = req._id;
     const curUser = await User.findById(curUserId);
 
+    console.log(curUserId);
+    console.log(curUser);
     //delete all posts
     await Post.deleteMany({
-      owner: curUserId,
+      owner: curUser,
     });
 
     //remove myself from followers' following
     curUser.followers.forEach(async (followerId) => {
       const follower = await User.findById(followerId);
-      const index = follower.followings.indexOf(curUserId);
+      const index = follower.followings.indexOf(curUser);
       follower.followings.splice(index, 1);
       await follower.save();
     });
@@ -138,7 +140,7 @@ const deleteMyProfile = async (req, res) => {
     //remove myself from followings' followers
     curUser.followings.forEach(async (followingId) => {
       const following = await User.findById(followingId);
-      const index = following.followers.indexOf(curUserId);
+      const index = following.followers.indexOf(curUser);
       following.followers.splice(index, 1);
       await follower.save();
     });
@@ -146,7 +148,7 @@ const deleteMyProfile = async (req, res) => {
     //remove myself from all likes
     const allPosts = await Post.find();
     allPosts.forEach(async (post) => {
-      const index = post.likes.indexOf(curUserId);
+      const index = post.likes.indexOf(curUser);
       post.likes.splice(index, 1);
       await post.save();
     });
