@@ -22,7 +22,7 @@ const app = express();
 
 //middlewares
 app.use(express.json({ limit: "10mb" }));
-app.use(morgan("common"));
+app.use(morgan("common")); //logs which api is hit
 app.use(cookieParser());
 let origin = "http://localhost:3000";
 console.log("here env", process.env.NODE_ENV);

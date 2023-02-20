@@ -63,7 +63,7 @@ const getPostsOfFollowing = async (req, res) => {
       .map((item) => mapPostOutput(item, req._id))
       .reverse();
 
-    console.log("posts here!!!!", posts);
+    // console.log("posts here!!!!", posts);
 
     const followingsIds = curUser.followings.map((item) => item._id);
     followingsIds.push(req._id);
@@ -122,14 +122,14 @@ const deleteMyProfile = async (req, res) => {
     const curUserId = req._id;
     const curUser = await User.findById(curUserId);
 
-    console.log(curUserId);
-    console.log(curUser);
-    //delete all posts
+    // All posts Deletion
+
     await Post.deleteMany({
       owner: curUser,
     });
 
-    //remove myself from followers' following
+    //Removing Myself from follower's followings
+
     curUser.followers.forEach(async (followerId) => {
       const follower = await User.findById(followerId);
       const index = follower.followings.indexOf(curUser);
@@ -137,23 +137,24 @@ const deleteMyProfile = async (req, res) => {
       await follower.save();
     });
 
-    //remove myself from followings' followers
+    //Removing Myself from following's followers
+
     curUser.followings.forEach(async (followingId) => {
       const following = await User.findById(followingId);
       const index = following.followers.indexOf(curUser);
       following.followers.splice(index, 1);
-      await follower.save();
+      await following.save();
     });
 
-    //remove myself from all likes
+    //Removing Myself from all likes
+
     const allPosts = await Post.find();
     allPosts.forEach(async (post) => {
-      const index = post.likes.indexOf(curUser);
+      const index = await post.likes.indexOf(curUser);
       post.likes.splice(index, 1);
       await post.save();
     });
 
-    //delete user
     await curUser.remove();
 
     res.clearCookie("jwt", {
@@ -161,10 +162,9 @@ const deleteMyProfile = async (req, res) => {
       secure: true,
     });
 
-    return res.send(success(200, "User deleted"));
-  } catch (e) {
-    console.log(e);
-    return res.send(error(500, e.message));
+    return res.send(success(200, "User Deleted"));
+  } catch (err) {
+    return res.send(error(500, err.message));
   }
 };
 

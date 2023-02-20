@@ -53,10 +53,10 @@ const likeAndUnlikePost = async (req,res) => {
             return res.send(error(404, 'Post not found'));
         }
     
-        if(post.likes.includes(curUserId)) {
+        if(post.likes.includes(curUserId)) { //found
             const index = post.likes.indexOf(curUserId);
             post.likes.splice(index, 1);   
-        } else {
+        } else {    //not found
             post.likes.push(curUserId); 
         }
         await post.save();

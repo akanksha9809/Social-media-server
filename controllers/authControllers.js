@@ -90,7 +90,7 @@ const refreshAccessTokenController = async(req, res) => {
             refreshToken, 
             process.env.REFRESH_TOKEN_PRIVATE_KEY
             );
-
+            // decoded => id, iat, exp, acceess token
         const _id=decoded._id;
         const accessToken = generateAccessToken({_id});
        
